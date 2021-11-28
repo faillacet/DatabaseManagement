@@ -7,7 +7,7 @@ class dbOperations():
             host="localhost",
             user="root",
             password="iarepotato13",
-            database="sakila"
+            database="nbaproject"
         )
         print("Database connection established.")
 
@@ -24,6 +24,12 @@ class dbOperations():
         self.cursor.execute(query)
         self.connection.commit()
         print("Query Executed.")
+
+    # Inserts a single record into table
+    def insertRecord(self, query, record):
+        self.cursor.execute(query, record)
+        self.connection.commit()
+        print("Record Inserted")
 
     # function for bulk inserting records
     def bulkInsert(self,query,record):

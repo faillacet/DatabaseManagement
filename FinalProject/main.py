@@ -1,11 +1,6 @@
+from DataGrabber import DataGrabber
 from dbOperations import dbOperations
 from helper import helper
-from nba_api.stats.static import teams
-from nba_api.stats.static import players
-# FOR SURE USING ^
-from nba_api.stats.endpoints import commonplayerinfo
-from nba_api.stats.endpoints import teaminfocommon
-from nba_api.stats.endpoints import teamgamelog
 
 # GLOBALS ----------------------------------------------
 nbaCode = 00
@@ -23,10 +18,15 @@ def getTeamInfo(id):
 
 # Main Function ----------------------------------------
 def main():
+    dbOps = dbOperations()
+    DataGrabber.updateDatabase(dbOps)
+    #DataGrabber.tester()
+
+    print("Done :)")
     # getTeamList()
     # gameInfo = teamgamelog.TeamGameLog(tempID)
     # print(gameInfo.get_normalized_json())
-    dbops = dbOperations()
+    
 # ------------------------------------------------------
 
 # Ensures main is called when file is run
