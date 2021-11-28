@@ -22,44 +22,40 @@ class DataGrabber:
                 pass
 
     @staticmethod
-    def updateDatabase(dbOps):
+    def updatePlayers(dbOps):
         # Grab currently stored Data
         currPlayers = dbOps.getRecords("SELECT playerID FROM player;")
-        #currTeams = dbOps.getRecords("")
 
         # Grab new data from API then convert from dict to list
-        # Player
         playerDict = players.get_players() # id, full_name, first_name, last_name, is_active
         playerList = []
         for row in playerDict:
             playerList.append(list(row.values()))
 
-        # Team
-        teamDict = teams.get_teams() # id, full_name, abbreviation, nickname, city, state, year_founded
-        teamList = []
-        for row in teamDict:
-            teamList.append(list(row.values()))
-
-        # Compare currData with newData to delete repeats
-        # Player
-        newPlayers = []
+        # Compare currData with newData to delete repeats        
         if len(currPlayers) != 0:
+            tempList = []
+            counter = 0
             for player in playerList:
-                for id in currPlayers:
-                    if id != player[0]:
-                        newPlayers.append(player)
-        else:
-            for player in playerList:
-                newPlayers.append(player)
-        
-        # Team
+                for key in currPlayers:
+                    if key[0] == player[0]:
+                        tempList.append(counter)
+                counter = counter + 1
+            tempList.reverse()
+            for x in tempList:
+                playerList.remove(playerList[x])
 
-        # Insert new data into database
-        # Player Table
-        if len(newPlayers) != 0:
-            
-            DataGrabber.insertPlayers(dbOps, newPlayers)
-            DataGrabber.tester()
+        # Insert new data into Player Table
+        if len(playerList) != 0:
+            while len(playerList) != 0:
+                chunk = []
+                counter = 0
+                while counter < 100 and len(playerList) != 0:
+                    chunk.append(playerList[counter])
+                    counter = counter + 1
+                DataGrabber.insertPlayers(dbOps, chunk)
+                while counter != -1:
+                    playerList.pop(0)
         # Team Table
 
 

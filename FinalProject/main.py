@@ -19,7 +19,11 @@ def getTeamInfo(id):
 # Main Function ----------------------------------------
 def main():
     dbOps = dbOperations()
-    DataGrabber.updateDatabase(dbOps)
+
+    # Prompt user to update Database
+    print("Would you like to update the DB before use?")
+
+    DataGrabber.updatePlayers(dbOps)
     #DataGrabber.tester()
 
     print("Done :)")

@@ -25,12 +25,6 @@ class dbOperations():
         self.connection.commit()
         print("Query Executed.")
 
-    # Inserts a single record into table
-    def insertRecord(self, query, record):
-        self.cursor.execute(query, record)
-        self.connection.commit()
-        print("Record Inserted")
-
     # function for bulk inserting records
     def bulkInsert(self,query,record):
         self.cursor.executemany(query,record)
