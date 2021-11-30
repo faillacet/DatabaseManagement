@@ -1,3 +1,4 @@
+from os import stat
 from nba_api.stats import static
 from helper import helper
 from dbOperations import dbOperations
@@ -11,15 +12,9 @@ from nba_api.stats.endpoints import teamgamelog
 # Handles processing data from NBA API
 class DataGrabber:
     @staticmethod
-    def convert(value):
-        types = [int,float,str] # order needs to be this way
-        if value == '':
-            return None
-        for t in types:
-            try:
-                return t(value)
-            except:
-                pass
+    def updateDatabase(dbOps):
+        DataGrabber.updatePlayers(dbOps)
+        DataGrabber.updateTeams(dbOps)
 
     @staticmethod
     def updatePlayers(dbOps):
@@ -47,17 +42,7 @@ class DataGrabber:
 
         # Insert new data into Player Table
         if len(playerList) != 0:
-            while len(playerList) != 0:
-                chunk = []
-                counter = 0
-                while counter < 100 and len(playerList) != 0:
-                    chunk.append(playerList[counter])
-                    counter = counter + 1
-                DataGrabber.insertPlayers(dbOps, chunk)
-                while counter != -1:
-                    playerList.pop(0)
-        # Team Table
-
+            DataGrabber.insertPlayers(dbOps, playerList)
 
     @staticmethod
     def insertPlayers(dbOps, pList):
@@ -66,7 +51,76 @@ class DataGrabber:
         query = "INSERT INTO player VALUES("+placeholder+")"
         dbOps.bulkInsert(query, pList)
         print(str(len(pList)) + " new players added.")
-        
+
     @staticmethod
-    def tester():
-        print("")
+    def updateTeams(dbOps):
+        # Grab currently stored Data
+        currTeams = dbOps.getRecords("SELECT teamID FROM team;")
+
+        # Grab new data from API then convert from dict to list
+        teamDict = teams.get_teams() # id, full_name, abbreviation, nickname, city, state, year_founded
+        teamList = []
+        for row in teamDict:
+            teamList.append(list(row.values()))
+
+        # Compare currData with newData to delete repeats        
+        if len(currTeams) != 0:
+            tempList = []
+            counter = 0
+            for team in teamList:
+                for key in currTeams:
+                    if key[0] == team[0]:
+                        tempList.append(counter)
+                counter = counter + 1
+            tempList.reverse()
+            for x in tempList:
+                teamList.remove(teamList[x])
+
+        # Insert new data into Team Table
+        if len(teamList) != 0:
+            DataGrabber.insertTeams(dbOps, teamList)
+
+    @staticmethod
+    def insertTeams(dbOps, tList):
+        attribute_count = len(tList[0])
+        placeholder = ("%s,"*attribute_count)[:-1]
+        query = "INSERT INTO team VALUES("+placeholder+")"
+        dbOps.bulkInsert(query, tList)
+        print(str(len(tList)) + " new teams added.")
+
+    @staticmethod
+    def tester(dbOps):
+        pID = 555555
+        # Grab new data from API then convert from dict to list
+        try:
+            playerInfo = commonplayerinfo.CommonPlayerInfo(player_id=pID).player_headline_stats.get_dict()
+            print(playerInfo['data'][0])
+        except:
+            print("Some error occured...")
+
+    
+    @staticmethod
+    def getPlayerStats(dbOps, pID):
+        # Retrieve player stats from API
+        # pID, name, timeframe, pts, ast, reb, pie
+        try:
+            playerInfo = commonplayerinfo.CommonPlayerInfo(player_id=pID).player_headline_stats.get_dict()
+            stats = playerInfo['data'][0]
+            stats.pop(1)
+            print(stats)
+
+            # Insert into database
+            attribute_count = len(stats)
+            placeholder = ("%s,"*attribute_count)[:-1]
+            query = "INSERT INTO playerstats VALUES("+placeholder+")"
+            dbOps.insertRecord(query, stats)
+            return True;
+        except:
+            return False;
+
+
+
+        
+
+        
+ 

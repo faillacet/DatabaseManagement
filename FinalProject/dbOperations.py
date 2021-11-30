@@ -25,19 +25,30 @@ class dbOperations():
         self.connection.commit()
         print("Query Executed.")
 
+    # function for inserting single record
+    def insertRecord(self, query, record):
+        self.cursor.execute(query,record)
+        self.connection.commit()
+
     # function for bulk inserting records
     def bulkInsert(self,query,record):
         self.cursor.executemany(query,record)
         self.connection.commit()
         print("query executed..")
 
-    # returns a single record of the table
+    # returns records from query
     def getRecords(self, query):
         self.cursor.execute(query)
         results = self.cursor.fetchall()
-        return results    
+        return results
+    
+    # returns a single record of the table
+    def getRecord(self, query):
+        self.cursor.execute(query)
+        results = self.cursor.fetchone()
+        return results
 
     # function to return a single value from table
-    def getSingleRecord(self,query):
-        self.cursor.execute(query)
+    def getSingleRecord(self):
+        self.cursor.execute()
         return self.cursor.fetchone()[0]
