@@ -66,7 +66,7 @@ def main():
     #updateDB(dbOps)
 
     # TESTING SECTION -------------
-    #DisplayData.teamStats(dbOps)
+    DisplayData.teamStats(dbOps)
     # -----------------------------
 
     # Program Loop
@@ -84,7 +84,8 @@ def main():
             deleteRecords()
         elif userChoice == 6:
             # Exit Program
-            break;
+            break
+
     dbOps.destructor()
     print("Thank you for using NBA Database!")
     print("Now exiting...")

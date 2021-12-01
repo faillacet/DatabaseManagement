@@ -1,0 +1,40 @@
+CREATE DATABASE nbaproject;
+USE nbaproject;
+DROP TABLE player;
+CREATE TABLE player (
+playerID int primary key not null,
+fullName varchar(40),
+firstName varchar(20),
+lastName varchar(20),
+isActive bool);
+SELECT * FROM player;
+
+CREATE TABLE team (
+teamID int primary key not null,
+name varchar(30),
+abbreviation varchar(4),
+nickname varchar(20),
+city varchar(25),
+state varchar(25),
+yearfounded int);
+
+select * from player WHERE fullName = 'Byron Scott';
+select * from team WHERE name = 'Boston Celtics';
+
+select * from team;
+
+CREATE TABLE playerstats (
+playerID integer primary key not null,
+timeframe varchar(15),
+points float,
+assists float,
+rebounds float,
+playerimpactestimate float
+);
+drop table playerstats;
+select * from playerstats;
+
+CREATE TABLE teamstats (
+teamID int primary key not null,
+
+);
