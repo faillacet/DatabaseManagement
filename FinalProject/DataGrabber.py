@@ -107,16 +107,15 @@ class DataGrabber:
             playerInfo = commonplayerinfo.CommonPlayerInfo(player_id=pID).player_headline_stats.get_dict()
             stats = playerInfo['data'][0]
             stats.pop(1)
-            print(stats)
-
-            # Insert into database
-            attribute_count = len(stats)
-            placeholder = ("%s,"*attribute_count)[:-1]
-            query = "INSERT INTO playerstats VALUES("+placeholder+")"
-            dbOps.insertRecord(query, stats)
-            return True;
         except:
-            return False;
+            return False
+        # Insert into database
+        attribute_count = len(stats)
+        placeholder = ("%s,"*attribute_count)[:-1]
+        query = "INSERT INTO playerstats VALUES("+placeholder+")"
+        dbOps.insertRecord(query, stats)
+        return True
+    
 
 
 

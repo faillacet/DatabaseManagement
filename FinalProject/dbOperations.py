@@ -34,7 +34,6 @@ class dbOperations():
     def bulkInsert(self,query,record):
         self.cursor.executemany(query,record)
         self.connection.commit()
-        print("query executed..")
 
     # returns records from query
     def getRecords(self, query):
@@ -43,12 +42,12 @@ class dbOperations():
         return results
     
     # returns a single record of the table
-    def getRecord(self, query):
-        self.cursor.execute(query)
-        results = self.cursor.fetchone()
-        return results
-
-    # function to return a single value from table
-    def getSingleRecord(self):
-        self.cursor.execute()
-        return self.cursor.fetchone()[0]
+    def getRecord(self, query, data):
+        if data == None:
+            self.cursor.execute(query)
+            results = self.cursor.fetchone()
+            return results
+        else:
+            self.cursor.execute(query, data)
+            results = self.cursor.fetchone()
+            return results
