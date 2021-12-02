@@ -132,3 +132,7 @@ class DisplayData:
         input1 = input()
         print(input1)
 
+    @staticmethod
+    def gameData(dbOps):
+        print()
+

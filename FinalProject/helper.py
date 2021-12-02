@@ -32,3 +32,7 @@ class helper():
                 return t(value)
             except:
                 pass
+
+    @staticmethod
+    def formattedDisplay(attributes, data):
+        print()

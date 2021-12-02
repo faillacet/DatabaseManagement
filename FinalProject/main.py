@@ -21,39 +21,37 @@ def displayMenu():
     print("6) Exit Program")
     return helper.get_choice(options)
 
+# Secondary Menu - Displaying Records
 def displayData(dbOps):
     options = [1, 2, 3, 4, 5, 6]
     print("\nWhat Kind of Data are you looking for?")
     print("1) Player data \n2) Player stats \n3) Team data \n4) Team stats \n5) Game Data \n6) Return to Menu")
     userChoice = helper.get_choice(options)
 
-    # Menu Loop
-    while True:
-        # Player Data
-        if userChoice == 1:
-            DisplayData.playerData(dbOps)
-            break
-        # Player Stats
-        elif userChoice == 2:
-            DisplayData.playerStats(dbOps)
-            break
-        elif userChoice == 3:
-            DisplayData.teamData(dbOps)
-            break
-        elif userChoice == 6:
-            break
-
-
+    if userChoice == 1:
+        DisplayData.playerData(dbOps)
+    elif userChoice == 2:
+        DisplayData.playerStats(dbOps)
+    elif userChoice == 3:
+        DisplayData.teamData(dbOps)
+    elif userChoice == 4:
+        DisplayData.teamStats(dbOps)
+    elif userChoice == 5:
+        DisplayData.gameData(dbOps)
             
+# Secondary Menu - Query Records
 def queryData():
     print("")
     
+# Secondary Menu - Add Records to DB
 def addRecords():
     print("")
 
+# Secondary Menu - Update Records in DB
 def updateRecords():
     print("")
 
+# Secondary Menu - Delete Records from DB
 def deleteRecords():
     print("")
 
