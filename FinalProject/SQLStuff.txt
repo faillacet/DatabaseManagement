@@ -18,7 +18,7 @@ city varchar(25),
 state varchar(25),
 yearfounded int);
 
-select * from player WHERE fullName = 'Byron Scott';
+select * from player WHERE fullName = 'Lebron James';
 select * from team WHERE name = 'Boston Celtics';
 
 select * from team;
@@ -36,5 +36,24 @@ select * from playerstats;
 
 CREATE TABLE teamstats (
 teamID int primary key not null,
+timeframe varchar(15),
+wins int,
+losses int,
+wPCT float,
+fgPCT float,
+fg3PCT float,
+rebounds float,
+assists float,
+blocks float,
+points float
+);
+
+select * from teamstats;
+
+
+CREATE TABLE game (
+gameID int primary key not null,
 
 );
+
+INSERT INTO player VALUES(
