@@ -33,6 +33,10 @@ class helper():
             except:
                 pass
 
+    # Universal function for displaying data to CL
     @staticmethod
     def formattedDisplay(attributes, data):
+        print()
+        for i in range(len(attributes)):
+            print(attributes[i] + ": " + str(data[i]))
         print()

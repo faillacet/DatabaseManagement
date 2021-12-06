@@ -1,13 +1,8 @@
-from os import stat
 from nba_api.stats import static
-from helper import helper
-from dbOperations import dbOperations
 from nba_api.stats.static import teams
 from nba_api.stats.static import players
-
 from nba_api.stats.endpoints import commonplayerinfo
-from nba_api.stats.endpoints import teaminfocommon
-from nba_api.stats.endpoints import teamgamelog
+from nba_api.stats.endpoints import teamdashboardbyteamperformance
 
 # Handles processing data from NBA API
 class DataGrabber:
@@ -87,17 +82,6 @@ class DataGrabber:
         query = "INSERT INTO team VALUES("+placeholder+")"
         dbOps.bulkInsert(query, tList)
         print(str(len(tList)) + " new teams added.")
-
-    @staticmethod
-    def tester(dbOps):
-        pID = 555555
-        # Grab new data from API then convert from dict to list
-        try:
-            playerInfo = commonplayerinfo.CommonPlayerInfo(player_id=pID).player_headline_stats.get_dict()
-            print(playerInfo['data'][0])
-        except:
-            print("Some error occured...")
-
     
     @staticmethod
     def getPlayerStats(dbOps, pID):
@@ -115,6 +99,24 @@ class DataGrabber:
         query = "INSERT INTO playerstats VALUES("+placeholder+")"
         dbOps.insertRecord(query, stats)
         return True
+
+    @staticmethod
+    def getTeamStats(dbOps, tID):
+        # Retrieve team stats from API
+        try:
+            tInfo = teamdashboardbyteamperformance.TeamDashboardByTeamPerformance(team_id=tID).overall_team_dashboard.get_dict()
+            tInfo = tInfo['data'][0]
+            # ID, TimeFrame, Wins, Losses, WinPCT, FG_PCT, FG3_PCT, REB, AST, BLK, PTS
+            tInfo = [tID, "2021-22", tInfo[3], tInfo[4], tInfo[5], tInfo[9], tInfo[12], tInfo[18], tInfo[19], tInfo[22], tInfo[26]]
+        except:
+            return False
+        # Insert into database
+        attrCount = len(tInfo)
+        placeHolder = ("%s,"*attrCount)[:-1]
+        query = "INSERT INTO teamstats VALUES("+placeHolder+")"
+        dbOps.insertRecord(query, tInfo)
+        return True
+
     
 
 

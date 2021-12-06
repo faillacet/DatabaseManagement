@@ -6,6 +6,7 @@ class DisplayData:
     def playerData(dbOps):
         print("\nSearch by: \n1) ID \n2) Full Name")
         userChoice = helper.get_choice([1, 2])
+        attr = ["ID", "Full Name", "First Name", "Last Name", "isActive"]
 
         if userChoice == 1:
             # Search by ID
@@ -15,9 +16,7 @@ class DisplayData:
             if pInfo == None:
                 print("\nPlayer Not Found...\n")
                 return
-            print("\nID, Full Name, First Name, Last Name, isActive")
-            print(pInfo)
-            print()
+            helper.formattedDisplay(attr, pInfo)
             return
 
         # Search By Full Name
@@ -32,15 +31,14 @@ class DisplayData:
             if pInfo == None:
                 print("\nPlayer Not Found...\n")
                 return
-            print("\nID, Full Name, First Name, Last Name, isActive")
-            print(pInfo)
-            print()
+            helper.formattedDisplay(attr, pInfo)
             return
 
     @staticmethod
     def playerStats(dbOps):
         print("\nSearch by: \n1) ID \n2) Full Name")
         userChoice = helper.get_choice([1, 2])
+        attr = ["pID", "timeFrame", "PTS", "AST", "REB", "PIE"]
 
         if userChoice == 1:
             # Search by ID
@@ -51,49 +49,43 @@ class DisplayData:
                 # Check API
                 if DataGrabber.getPlayerStats(dbOps, ID) == True:
                     pInfo = dbOps.getRecord(query, None)
-                    print("\npID, timeframe, pts, ast, reb, pie")
-                    print(pInfo)
-                    print()
+                    helper.formattedDisplay(attr, pInfo)
                 else:
                     print("\nPlayer Not Found...\n")
                     return
             else:
-                print("\npID, timeframe, pts, ast, reb, pie")
-                print(pInfo)
-                print()
+                helper.formattedDisplay(attr, pInfo)
                 return
 
         elif userChoice == 2:
             # Search by Full Name
             name = input("Enter Full Name: ")
             query = "SELECT playerID FROM player WHERE fullName = %s;"
-            pID = dbOps.getRecord(query, (name,))[0]
+            pID = dbOps.getRecord(query, (name,))
             if pID == None:
                 print("\nPlayer not found...\n")
                 return
             else:
+                pID = pID[0]
                 query = "SELECT * FROM playerstats WHERE playerID = %s;"
                 pInfo = dbOps.getRecord(query, (pID,))
                 if pInfo == None:
                     # Check API
                     if DataGrabber.getPlayerStats(dbOps, pID) == True:
                         pInfo = dbOps.getRecord(query, (pID,))
-                        print("\npID, timeframe, pts, ast, reb, pie")
-                        print(pInfo)
-                        print()
+                        helper.formattedDisplay(attr, pInfo)
                     else:
                         print("\nPlayer Not Found...\n")
                         return
                 else:
-                    print("\npID, timeframe, pts, ast, reb, pie")
-                    print(pInfo)
-                    print()
+                    helper.formattedDisplay(attr, pInfo)
                     return
 
     @staticmethod
     def teamData(dbOps):
         print("\n1) Display All: \n2) Search By ID\n3) Search By Full Name")
         userChoice = helper.get_choice([1, 2, 3])
+        attr = ["teamID", "Name", "Abbreviation", "Nickname", "City", "State", "YearFounded"]
 
         if userChoice == 1:
             # Display All
@@ -110,9 +102,7 @@ class DisplayData:
             if tInfo == None:
                 print("\nTeam Not Found...\n")
                 return
-            print("\nteamID, name, abbreviation, nickname, city, state, yearfounded")
-            print(tInfo)
-            print()
+            helper.formattedDisplay(attr, tInfo)
             return
 
         elif userChoice == 3:
@@ -122,17 +112,53 @@ class DisplayData:
             if tInfo == None:
                 print("\nTeam Not Found...\n")
                 return
-            print("\nteamID, name, abbreviation, nickname, city, state, yearfounded")
-            print(tInfo)
-            print()
+            helper.formattedDisplay(attr, tInfo)
             return
 
     @staticmethod
     def teamStats(dbOps):
-        input1 = input()
-        print(input1)
+        print("\n1) Search By ID\n2) Search By Full Name")
+        userChoice = helper.get_choice([1, 2])
+        attr = ["ID", "TimeFrame", "Wins", "Losses", "WinPCT", "FG_PCT", "FG3_PCT", "REB", "AST", "BLK", "PTS"]
 
-    @staticmethod
-    def gameData(dbOps):
-        print()
+        if userChoice == 1:
+            # Search by ID
+            ID = int(input("Enter ID: "))
+            query = "SELECT * FROM teamstats WHERE teamID = %s;"
+            tInfo = dbOps.getRecord(query, (ID,))
+            if tInfo == None:
+                # Try to pull from API
+                if DataGrabber.getTeamStats(dbOps, ID) == True:
+                    tInfo = dbOps.getRecord(query, (ID,))
+                    helper.formattedDisplay(attr, tInfo)
+                else:
+                    print("\Team Not Found...\n")
+                    return
+            else:
+                helper.formattedDisplay(attr, tInfo)
+                return
+
+        elif userChoice == 2:
+            # Search by Full Name
+            name = input("Enter Full Name: ")
+            query = "SELECT teamID FROM team WHERE name = %s;"
+            tID = dbOps.getRecord(query, (name,))
+            if tID == None:
+                print("\Team not found...\n")
+                return
+            else:
+                tID = tID[0]
+                query = "SELECT * FROM teamstats WHERE teamID = %s;"
+                tInfo = dbOps.getRecord(query, (tID,))
+                if tInfo == None:
+                    # Check API
+                    if DataGrabber.getTeamStats(dbOps, tID) == True:
+                        tInfo = dbOps.getRecord(query, (tID,))
+                        helper.formattedDisplay(attr, tInfo)
+                    else:
+                        print("\nTeam Not Found...\n")
+                        return
+                else:
+                    helper.formattedDisplay(attr, tInfo)
+                    return
 
