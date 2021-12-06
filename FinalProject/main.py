@@ -111,7 +111,7 @@ def main():
     #updateDB(dbOps)
 
     # TESTING SECTION -------------
-    UpdateRecords.updatePlayer(dbOps)
+    UpdateRecords.updatePlayerStats(dbOps)
     # -----------------------------
 
     # Program Loop

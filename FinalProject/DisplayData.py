@@ -17,7 +17,7 @@ class DisplayData:
                 print("\nPlayer Not Found...\n")
                 return
             helper.formattedDisplay(attr, pInfo)
-            return
+            return pInfo
 
         # Search By Full Name
         elif userChoice == 2:
@@ -28,7 +28,7 @@ class DisplayData:
                 print("\nPlayer Not Found...\n")
                 return
             helper.formattedDisplay(attr, pInfo)
-            return
+            return pInfo
 
     @staticmethod
     def playerStats(dbOps):
@@ -46,12 +46,13 @@ class DisplayData:
                 if DataGrabber.getPlayerStats(dbOps, ID) == True:
                     pInfo = dbOps.getRecord(query, None)
                     helper.formattedDisplay(attr, pInfo)
+                    return pInfo
                 else:
                     print("\nPlayer Not Found...\n")
                     return
             else:
                 helper.formattedDisplay(attr, pInfo)
-                return
+                return pInfo
 
         elif userChoice == 2:
             # Search by Full Name
@@ -70,12 +71,13 @@ class DisplayData:
                     if DataGrabber.getPlayerStats(dbOps, pID) == True:
                         pInfo = dbOps.getRecord(query, (pID,))
                         helper.formattedDisplay(attr, pInfo)
+                        return pInfo
                     else:
                         print("\nPlayer Not Found...\n")
                         return
                 else:
                     helper.formattedDisplay(attr, pInfo)
-                    return
+                    return pInfo
 
     @staticmethod
     def teamData(dbOps):
