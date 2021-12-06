@@ -1,4 +1,5 @@
 from DataGrabber import DataGrabber
+from UpdateRecords import UpdateRecords
 from DisplayData import DisplayData
 from dbOperations import dbOperations
 from AddRecords import AddRecords
@@ -8,7 +9,7 @@ from helper import helper
 def updateDB(dbOps):
     print("Updating Database...")
     DataGrabber.updateDatabase(dbOps)
-    print("Database updated...")
+    print("Database updated...\n")
 
 # Main Menu
 def displayMenu(dbOps):
@@ -20,13 +21,13 @@ def displayMenu(dbOps):
     if userChoice == 1:
         displayData(dbOps)
     elif userChoice == 2:
-        queryData()
+        queryData(dbOps)
     elif userChoice == 3:
         addRecords(dbOps)
     elif userChoice == 4:
-        updateRecords()
+        updateRecords(dbOps)
     elif userChoice == 5:
-        deleteRecords()
+        deleteRecords(dbOps)
     elif userChoice == 6:
         # Exit Program
         return False
@@ -51,12 +52,15 @@ def displayData(dbOps):
         print()
             
 # Secondary Menu - Query Records
-def queryData():
-    print("")
+def queryData(dbOps):
+    options = [1, 2, 3, 4, 5]
+    print("\What kind of Query would you like to do?")
+    print("1) Player \n2) PlayerStats \n3) Team \n4) TeamStats \n5) Game \n6) Return to Menu")
+    userChoice = helper.get_choice(options)
     
 # Secondary Menu - Add Records to DB
 def addRecords(dbOps):
-    options = [1, 2, 3, 4, 5]
+    options = [1, 2, 3, 4, 5, 6]
     print("\nWhat Table do you want to add a record to?")
     print("1) Player \n2) PlayerStats \n3) Team \n4) TeamStats \n5) Game \n6) Return to Menu")
     userChoice = helper.get_choice(options)
@@ -75,11 +79,27 @@ def addRecords(dbOps):
         print()
 
 # Secondary Menu - Update Records in DB
-def updateRecords():
-    print("")
+def updateRecords(dbOps):
+    options = [1, 2, 3, 4, 5, 6]
+    print("\nIn which table do you want to modify a record?")
+    print("1) Player \n2) PlayerStats \n3) Team \n4) TeamStats \n5) Game \n6) Return to Menu")
+    userChoice = helper.get_choice(options)
 
-# Secondary Menu - Delete Records from DB
-def deleteRecords():
+    if userChoice == 1:
+        AddRecords.updatePlayer(dbOps)
+    elif userChoice == 2:
+        AddRecords.updatePlayerStats(dbOps)
+    elif userChoice == 3:
+        AddRecords.updateTeam(dbOps)
+    elif userChoice == 4:
+        AddRecords.updateTeamStats(dbOps)
+    elif userChoice == 5:
+        AddRecords.updateGame(dbOps)
+    elif userChoice == 6:
+        print()
+
+# Secondary Menu - Delete Records from DB - Incorporates Commit and Rollback
+def deleteRecords(dbOps):
     print("")
 
 # Main Function ----------------------------------------
@@ -91,7 +111,7 @@ def main():
     #updateDB(dbOps)
 
     # TESTING SECTION -------------
-    #AddRecords.addPlayer(dbOps)
+    UpdateRecords.updatePlayer(dbOps)
     # -----------------------------
 
     # Program Loop
@@ -99,7 +119,7 @@ def main():
         print()
    
     dbOps.destructor()
-    print("Thank you for using NBA Database!")
+    print("\nThank you for using NBA Database!")
     print("Now exiting...")
 # ------------------------------------------------------
 

@@ -20,10 +20,9 @@ class dbOperations():
         self.connection.close()
 
     # executes a given query
-    def executeQuery(self, query):
-        self.cursor.execute(query)
+    def executeQuery(self, query, data):
+        self.cursor.execute(query, data)
         self.connection.commit()
-        print("Query Executed.")
 
     # function for inserting single record
     def insertRecord(self, query, record):

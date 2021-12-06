@@ -21,11 +21,7 @@ class DisplayData:
 
         # Search By Full Name
         elif userChoice == 2:
-            try:
-                name = input("Enter Full Name: ")
-            except:
-                print("\nPlayer Not found...\n")
-                return
+            name = input("Enter Full Name: ")
             query = "SELECT * FROM player WHERE fullName = %s;"
             pInfo = dbOps.getRecord(query, (name,))
             if pInfo == None:
