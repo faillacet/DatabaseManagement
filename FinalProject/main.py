@@ -105,15 +105,15 @@ def deleteRecords(dbOps):
     userChoice = helper.get_choice([1,2,3,4,5,6])
 
     if userChoice == 1:
-        DeleteRecords.deletePlayer()
+        DeleteRecords.deletePlayer(dbOps)
     elif userChoice == 2:
-        DeleteRecords.deletePlayerStats()
+        DeleteRecords.deletePlayerStats(dbOps)
     elif userChoice == 3:
-        DeleteRecords.deleteTeam()
+        DeleteRecords.deleteTeam(dbOps)
     elif userChoice == 4:
-        DeleteRecords.deleteTeamStats()
+        DeleteRecords.deleteTeamStats(dbOps)
     elif userChoice == 5:
-        DeleteRecords.deleteGame()
+        DeleteRecords.deleteGame(dbOps)
     elif userChoice == 6:
         print()
 

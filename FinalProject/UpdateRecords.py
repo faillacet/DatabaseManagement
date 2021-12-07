@@ -1,5 +1,4 @@
 from helper import helper
-from DataGrabber import DataGrabber
 from DisplayData import DisplayData
 
 class UpdateRecords:
