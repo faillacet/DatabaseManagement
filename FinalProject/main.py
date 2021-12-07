@@ -1,4 +1,5 @@
 from DataGrabber import DataGrabber
+from DeleteRecords import DeleteRecords
 from UpdateRecords import UpdateRecords
 from DisplayData import DisplayData
 from dbOperations import dbOperations
@@ -80,27 +81,41 @@ def addRecords(dbOps):
 
 # Secondary Menu - Update Records in DB
 def updateRecords(dbOps):
-    options = [1, 2, 3, 4, 5, 6]
     print("\nIn which table do you want to modify a record?")
     print("1) Player \n2) PlayerStats \n3) Team \n4) TeamStats \n5) Game \n6) Return to Menu")
-    userChoice = helper.get_choice(options)
+    userChoice = helper.get_choice([1, 2, 3, 4, 5, 6])
 
     if userChoice == 1:
-        AddRecords.updatePlayer(dbOps)
+        UpdateRecords.updatePlayer(dbOps)
     elif userChoice == 2:
-        AddRecords.updatePlayerStats(dbOps)
+        UpdateRecords.updatePlayerStats(dbOps)
     elif userChoice == 3:
-        AddRecords.updateTeam(dbOps)
+        UpdateRecords.updateTeam(dbOps)
     elif userChoice == 4:
-        AddRecords.updateTeamStats(dbOps)
+        UpdateRecords.updateTeamStats(dbOps)
     elif userChoice == 5:
-        AddRecords.updateGame(dbOps)
+        UpdateRecords.updateGame(dbOps)
     elif userChoice == 6:
         print()
 
 # Secondary Menu - Delete Records from DB - Incorporates Commit and Rollback
 def deleteRecords(dbOps):
-    print("")
+    print("\nFrom which table would you like to delete records?")
+    print("1) Player \n2) PlayerStats \n3) Team \n4) TeamStats \n5) Game \n6) Return to Menu")
+    userChoice = helper.get_choice([1,2,3,4,5,6])
+
+    if userChoice == 1:
+        DeleteRecords.deletePlayer()
+    elif userChoice == 2:
+        DeleteRecords.deletePlayerStats()
+    elif userChoice == 3:
+        DeleteRecords.deleteTeam()
+    elif userChoice == 4:
+        DeleteRecords.deleteTeamStats()
+    elif userChoice == 5:
+        DeleteRecords.deleteGame()
+    elif userChoice == 6:
+        print()
 
 # Main Function ----------------------------------------
 def main():
