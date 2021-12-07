@@ -129,12 +129,13 @@ class DisplayData:
                 if DataGrabber.getTeamStats(dbOps, ID) == True:
                     tInfo = dbOps.getRecord(query, (ID,))
                     helper.formattedDisplay(attr, tInfo)
+                    return tInfo
                 else:
                     print("\Team Not Found...\n")
                     return
             else:
                 helper.formattedDisplay(attr, tInfo)
-                return
+                return tInfo
 
         elif userChoice == 2:
             # Search by Full Name
@@ -153,10 +154,11 @@ class DisplayData:
                     if DataGrabber.getTeamStats(dbOps, tID) == True:
                         tInfo = dbOps.getRecord(query, (tID,))
                         helper.formattedDisplay(attr, tInfo)
+                        return tInfo
                     else:
                         print("\nTeam Not Found...\n")
                         return
                 else:
                     helper.formattedDisplay(attr, tInfo)
-                    return
+                    return tInfo
 
