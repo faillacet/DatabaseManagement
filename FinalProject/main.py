@@ -126,7 +126,7 @@ def main():
     #updateDB(dbOps)
 
     # TESTING SECTION -------------
-    #UpdateRecords.updatePlayerStats(dbOps)
+    DataGrabber.getGame(None, None)
     # -----------------------------
 
     # Program Loop

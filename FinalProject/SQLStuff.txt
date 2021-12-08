@@ -7,7 +7,7 @@ fullName varchar(40),
 firstName varchar(20),
 lastName varchar(20),
 isActive bool);
-SELECT * FROM player;
+SELECT * FROM player WHERE isActive = 1;
 
 CREATE TABLE team (
 teamID int primary key not null,
@@ -18,7 +18,8 @@ city varchar(25),
 state varchar(25),
 yearfounded int);
 
-select * from player WHERE fullName = 'Lebron James';
+INSERT INTO player VALUES(1, NULL, NULL, NULL, 0);
+select * from player;
 select * from team WHERE name = 'Boston Celtics';
 
 select * from team;
@@ -29,7 +30,8 @@ timeframe varchar(15),
 points float,
 assists float,
 rebounds float,
-playerimpactestimate float
+playerimpactestimate float,
+FOREIGN KEY (playerID) REFERENCES player(playerID)
 );
 drop table playerstats;
 select * from playerstats;
@@ -45,15 +47,21 @@ fg3PCT float,
 rebounds float,
 assists float,
 blocks float,
-points float
+points float,
+FOREIGN KEY (teamID) REFERENCES team(teamID)
 );
 
+DROP TABLE teamstats;
 select * from teamstats;
 
 
 CREATE TABLE game (
 gameID int primary key not null,
+teamID int not null,
+matchupteamID int not null,
+gameDate varchar(15),
 
+
+
+FOREIGN KEY (teamID) REFERENCES team(teamID)
 );
-
-INSERT INTO player VALUES(

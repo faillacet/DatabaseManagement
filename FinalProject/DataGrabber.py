@@ -1,8 +1,8 @@
-from nba_api.stats import static
 from nba_api.stats.static import teams
 from nba_api.stats.static import players
 from nba_api.stats.endpoints import commonplayerinfo
 from nba_api.stats.endpoints import teamdashboardbyteamperformance
+from nba_api.stats.endpoints import teamgamelog
 
 # Handles processing data from NBA API
 class DataGrabber:
@@ -117,8 +117,16 @@ class DataGrabber:
         dbOps.insertRecord(query, tInfo)
         return True
 
-    
-
+    @staticmethod
+    def getGame(dbOps, tID):
+        attr = ["teamID", "gameID", "gameDate", "matchup", "WL", "W", "L", "W_PCT", "MIN", "FGM", "FGA", "FG_PCT", "FG3M", "FG3A", "FG3_PCT",
+                "FTM", "FTA", "FT_PCT", "OREB", "DREB", "REB", "AST", "STL", "BLK", "TOV", "PF", "PTS"]
+        attrKeep = ["gameID", "teamID", "gameDate", "matchup", "WL", "wPCT", "fgPCT", "fg3PCT", ""]
+        gInfo = teamgamelog.TeamGameLog(team_id=1610612737).get_dict()
+        gInfo = gInfo['resultSets'][0]['rowSet']
+        for x in gInfo:
+            print(x)
+        
 
 
         

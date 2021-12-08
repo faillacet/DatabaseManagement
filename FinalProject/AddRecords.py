@@ -17,6 +17,7 @@ class AddRecords:
                     if dbOps.getRecord(query, (id,)) != None:
                         print("\nA record with this ID already exists, try again...\n")
                     else:
+                        record.append(id)
                         break
             else:
                 record.append(input(x +": "))
@@ -37,21 +38,33 @@ class AddRecords:
     def addPlayerStats(dbOps):
         attr = ["pID (int)", "timeFrame (string)", "PTS (float)", "AST (float)", "REB (float)", "PIE (float)"]
         print("-----NOTE: Enter \"NULL\" if the value DNE-----")
+        print("-----NOTE: A Player with same ID must already exist in player table-----")
+        print("-----NOTE: Type \"quit\" to return to menu-----")
         print("Please fill in all the following values to insert into table playerstats:")
         record = []
 
         for x in attr:
             if x == "pID (int)":
                 # Check to see if ID already exists in DB
-                query = "SELECT playerID FROM playerstats WHERE playerID = %s"
+                query = "SELECT playerID FROM playerstats WHERE playerID = %s;"
+                # Check to see if ID already exists in player table
+                query2 = "SELECT playerID FROM player WHERE playerID = %s;"
                 while True:
                     id = input(x +": ")
-                    if dbOps.getRecord(query, (id,)) != None:
+                    if id == "quit":
+                        return
+                    elif dbOps.getRecord(query, (id,)) != None:
                         print("\nA record with this ID already exists, try again...\n")
+                    elif dbOps.getRecord(query2, (id,)) == None:
+                        print("\nA record with this ID DNE within player table, try again...\n")
                     else:
+                        record.append(id)
                         break
             else:
-                record.append(input(x +": "))
+                uInput = input(x +": ")
+                if uInput == "quit":
+                    return
+                record.append(uInput)
 
         # Insert Record
         try:
@@ -81,6 +94,7 @@ class AddRecords:
                     if dbOps.getRecord(query, (id,)) != None:
                         print("\nA record with this ID already exists, try again...\n")
                     else:
+                        record.append(id)
                         break
             else:
                 record.append(input(x +": "))
@@ -101,6 +115,8 @@ class AddRecords:
     def addTeamStats(dbOps):
         attr = ["pID", "TimeFrame", "Wins", "Losses", "WinPCT", "FG_PCT", "FG3_PCT", "REB", "AST", "BLK", "PTS"]
         print("-----NOTE: Enter \"NULL\" if the value DNE-----")
+        print("-----NOTE: A Player with same ID must already exist in player table-----")
+        print("-----NOTE: Type \"quit\" to return to menu-----")
         print("Please fill in all the following values to insert into table team:")
         record = []
 
@@ -108,11 +124,18 @@ class AddRecords:
             if x == "pID":
                 # Check to see if ID already exists in DB
                 query = "SELECT teamID FROM teamstats WHERE teamID = %s"
+                # Check to see if ID already exists in team table
+                query2 = "SELECT teamID FROM team WHERE teamID = %s"
                 while True:
                     id = input(x +": ")
-                    if dbOps.getRecord(query, (id,)) != None:
+                    if id == "quit":
+                        return
+                    elif dbOps.getRecord(query, (id,)) != None:
                         print("\nA record with this ID already exists, try again...\n")
+                    elif dbOps.getRecord(query2, (id,)) == None:
+                        print("\nA record with this ID DNE within team table, try again...\n")
                     else:
+                        record.append(id)
                         break
             else:
                 record.append(input(x +": "))
