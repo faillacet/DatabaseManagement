@@ -24,6 +24,11 @@ class dbOperations():
         self.cursor.execute(query, data)
         self.connection.commit()
 
+    # executes a given query with no data passed
+    def executeQueryN(self, query):
+        self.cursor.execute(query)
+        self.connection.commit()
+
     # function for inserting single record
     def insertRecord(self, query, record):
         self.cursor.execute(query,record)

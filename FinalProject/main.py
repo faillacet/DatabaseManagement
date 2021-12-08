@@ -54,10 +54,11 @@ def displayData(dbOps):
             
 # Secondary Menu - Query Records
 def queryData(dbOps):
-    options = [1, 2, 3, 4, 5]
+    options = [1, 2, 3, 4, 5, 6]
     print("\What kind of Query would you like to do?")
     print("1) Player \n2) PlayerStats \n3) Team \n4) TeamStats \n5) Game \n6) Return to Menu")
     userChoice = helper.get_choice(options)
+    
     
 # Secondary Menu - Add Records to DB
 def addRecords(dbOps):
@@ -123,10 +124,10 @@ def main():
     dbOps = dbOperations()
 
     # Update Database upon startup
-    #updateDB(dbOps)
+    updateDB(dbOps)
 
     # TESTING SECTION -------------
-    DataGrabber.getGame(None, None)
+    #DataGrabber.updatePlayerStats(dbOps)
     # -----------------------------
 
     # Program Loop

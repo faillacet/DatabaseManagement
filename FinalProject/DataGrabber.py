@@ -3,13 +3,15 @@ from nba_api.stats.static import players
 from nba_api.stats.endpoints import commonplayerinfo
 from nba_api.stats.endpoints import teamdashboardbyteamperformance
 from nba_api.stats.endpoints import teamgamelog
+from nba_api.stats.endpoints import leaguedashplayerstats
 
 # Handles processing data from NBA API
 class DataGrabber:
     @staticmethod
     def updateDatabase(dbOps):
-        DataGrabber.updatePlayers(dbOps)
         DataGrabber.updateTeams(dbOps)
+        DataGrabber.updatePlayers(dbOps)
+        DataGrabber.updatePlayerStats(dbOps)
 
     @staticmethod
     def updatePlayers(dbOps):
@@ -17,10 +19,12 @@ class DataGrabber:
         currPlayers = dbOps.getRecords("SELECT playerID FROM player;")
 
         # Grab new data from API then convert from dict to list
-        playerDict = players.get_players() # id, full_name, first_name, last_name, is_active
+        playerDict = players.get_players() # id, teamID, full_name, first_name, last_name, is_active
         playerList = []
-        for row in playerDict:
-            playerList.append(list(row.values()))
+        for player in playerDict:
+            temp = list(player.values())
+            temp.insert(1, None)
+            playerList.append(temp)
 
         # Compare currData with newData to delete repeats        
         if len(currPlayers) != 0:
@@ -84,21 +88,30 @@ class DataGrabber:
         print(str(len(tList)) + " new teams added.")
     
     @staticmethod
-    def getPlayerStats(dbOps, pID):
-        # Retrieve player stats from API
-        # pID, name, timeframe, pts, ast, reb, pie
-        try:
-            playerInfo = commonplayerinfo.CommonPlayerInfo(player_id=pID).player_headline_stats.get_dict()
-            stats = playerInfo['data'][0]
-            stats.pop(1)
-        except:
-            return False
-        # Insert into database
-        attribute_count = len(stats)
+    def updatePlayerStats(dbOps):
+        # Retrieve player stats from API --- FORMAT
+        playerStatsAPIAttr = ["PLAYER_ID", "PLAYER_NAME", "PLAYER_FIRST_NAME", "TEAM_ID", "TEAM_ABBREVIATION", "AGE", "GP", "W", "L", "W_PCT",
+                            "MIN", "FGM", "FGA", "FG_PCT", "FG3M", "FG3A", "FG3_PCT", "FTM", "FTA", "FT_PCT", "OREB",
+                            "DREB", "REB", "AST", "TOV", "STL", "BLK", "BLKA", "PF", "PFD", "PTS", "PLUS_MINUS", "NBA_FANTASY_PTS",
+                            "DD2", "TD3", "GP_RANK", "W_RANK", "L_RANK", "W_PCT_RANK", "MIN_RANK", "FGM_RANK", "FGA_RANK", "FG_PCT_RANK",
+                            "FG3M_RANK", "FG3A_RANK", "FG3_PCT_RANK", "FTM_RANK", "FTA_RANK", "FT_PCT_RANK", "OREB_RANK", "DREB_RANK",
+                            "REB_RANK", "AST_RANK", "TOV_RANK", "STL_RANK", "BLK_RANK", "BLKA_RANK", "PF_RANK", "PFD_RANK", "PTS_RANK",
+                            "PLUS_MINUS_RANK", "NBA_FANTASY_PTS_RANK", "DD2_RANK", "TD3_RANK", "CFID", "CFPARAMS"]
+        playerStatsAttr = ["playerID", "W", "L", "W_PCT", "FGM", "FGA", "FG_PCT", "FG3M", "FG3A", "FG3_PCT", "REB", "AST", "BLK"]
+
+        # First find player by playerID and add teamID to player table
+        pStats = leaguedashplayerstats.LeagueDashPlayerStats().league_dash_player_stats.get_dict()['data']
+        for player in pStats:
+            query = "UPDATE player SET teamID = %s WHERE playerID = " + str(player[0]) + ";"
+            dbOps.executeQuery(query, (player[3],))
+
+        # Then add stats to playerStats table
+        pStats = []
+        attribute_count = len(pStats[0])
         placeholder = ("%s,"*attribute_count)[:-1]
-        query = "INSERT INTO playerstats VALUES("+placeholder+")"
-        dbOps.insertRecord(query, stats)
-        return True
+        for player in pStats:
+            query = "INSERT INTO playerstats VALUES("+placeholder+");"
+
 
     @staticmethod
     def getTeamStats(dbOps, tID):
