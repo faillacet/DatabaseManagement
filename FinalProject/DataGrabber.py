@@ -97,7 +97,8 @@ class DataGrabber:
                             "FG3M_RANK", "FG3A_RANK", "FG3_PCT_RANK", "FTM_RANK", "FTA_RANK", "FT_PCT_RANK", "OREB_RANK", "DREB_RANK",
                             "REB_RANK", "AST_RANK", "TOV_RANK", "STL_RANK", "BLK_RANK", "BLKA_RANK", "PF_RANK", "PFD_RANK", "PTS_RANK",
                             "PLUS_MINUS_RANK", "NBA_FANTASY_PTS_RANK", "DD2_RANK", "TD3_RANK", "CFID", "CFPARAMS"]
-        playerStatsAttr = ["playerID", "W", "L", "W_PCT", "FGM", "FGA", "FG_PCT", "FG3M", "FG3A", "FG3_PCT", "REB", "AST", "BLK"]
+        playerStatsAttr = ["playerID", "W", "L", "W_PCT", "FGM", "FGA", "FG_PCT", "FG3M", "FG3A", "FG3_PCT", "REB", "AST", "BLK", "PTS",
+                            "W_RANK", "L_RANK", "W_PCT_RANK", "FG", ""]
 
         # First find player by playerID and add teamID to player table
         pStats = leaguedashplayerstats.LeagueDashPlayerStats().league_dash_player_stats.get_dict()['data']

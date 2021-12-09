@@ -1,13 +1,5 @@
 CREATE DATABASE nbaproject;
 USE nbaproject;
-DROP TABLE player;
-CREATE TABLE player (
-playerID int primary key not null,
-fullName varchar(40),
-firstName varchar(20),
-lastName varchar(20),
-isActive bool);
-SELECT * FROM player WHERE isActive = 1;
 
 CREATE TABLE team (
 teamID int primary key not null,
@@ -18,11 +10,20 @@ city varchar(25),
 state varchar(25),
 yearfounded int);
 
-INSERT INTO player VALUES(1, NULL, NULL, NULL, 0);
-select * from player;
-select * from team WHERE name = 'Boston Celtics';
-
 select * from team;
+
+CREATE TABLE player (
+playerID int primary key not null,
+teamID int,
+fullName varchar(40),
+firstName varchar(20),
+lastName varchar(20),
+isActive bool,
+FOREIGN KEY (teamID) REFERENCES team(teamID)
+);
+
+DROP TABLE player;
+SELECT * FROM player;
 
 CREATE TABLE playerstats (
 playerID integer primary key not null,
@@ -33,6 +34,7 @@ rebounds float,
 playerimpactestimate float,
 FOREIGN KEY (playerID) REFERENCES player(playerID)
 );
+
 drop table playerstats;
 select * from playerstats;
 
@@ -53,7 +55,6 @@ FOREIGN KEY (teamID) REFERENCES team(teamID)
 
 DROP TABLE teamstats;
 select * from teamstats;
-
 
 CREATE TABLE game (
 gameID int primary key not null,
