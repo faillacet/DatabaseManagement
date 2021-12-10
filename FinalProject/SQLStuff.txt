@@ -10,6 +10,7 @@ city varchar(25),
 state varchar(25),
 yearfounded int);
 
+DROP TABLE team;
 select * from team;
 
 CREATE TABLE player (
@@ -27,29 +28,44 @@ SELECT * FROM player;
 
 CREATE TABLE playerstats (
 playerID integer primary key not null,
-timeframe varchar(15),
-points float,
-assists float,
-rebounds float,
-playerimpactestimate float,
+wins int,
+losses int,
+winPCT float,
+fgM int,
+fgA int,
+fgPCT float,
+fg3M int,
+fg3A int,
+fg3PCT float,
+rebounds int,
+assists int,
+steals int,
+blocks int,
+points int,
 FOREIGN KEY (playerID) REFERENCES player(playerID)
 );
 
+INSERT INTO playerstats VALUES(203932, 12, 12, 0.5, 126, 246, 0.512, 25, 72, 0.347, 139, 52, 18, 328);
 drop table playerstats;
 select * from playerstats;
 
+
 CREATE TABLE teamstats (
 teamID int primary key not null,
-timeframe varchar(15),
 wins int,
 losses int,
-wPCT float,
+winPCT float,
+fgM int,
+fgA int,
 fgPCT float,
+fg3M int,
+fg3A int,
 fg3PCT float,
-rebounds float,
-assists float,
-blocks float,
-points float,
+rebounds int,
+assists int,
+steals int,
+blocks int,
+points int,
 FOREIGN KEY (teamID) REFERENCES team(teamID)
 );
 
@@ -60,9 +76,26 @@ CREATE TABLE game (
 gameID int primary key not null,
 teamID int not null,
 matchupteamID int not null,
+homeGame bool,
+seasonID varchar(10),
 gameDate varchar(15),
-
-
-
-FOREIGN KEY (teamID) REFERENCES team(teamID)
+WL char(1),
+fgM int,
+fgA int,
+fgPCT float,
+fg3M int,
+fg3A int,
+fg3PCT float,
+rebounds int,
+assists int,
+steals int,
+blocks int,
+points int,
+FOREIGN KEY (teamID) REFERENCES team(teamID),
+FOREIGN KEY (matchupteamID) REFERENCES team(teamID)
 );
+
+Select * from game;
+
+SELECT teamID from team WHERE abbreviation LIKE '%ATL';
+select * from team WHERE teamID = 1610612762;

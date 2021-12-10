@@ -124,10 +124,10 @@ def main():
     dbOps = dbOperations()
 
     # Update Database upon startup
-    updateDB(dbOps)
+    #updateDB(dbOps)
 
     # TESTING SECTION -------------
-    #DataGrabber.updatePlayerStats(dbOps)
+    DataGrabber.updateGame(dbOps)
     # -----------------------------
 
     # Program Loop
