@@ -1,3 +1,4 @@
+from DisplayData import DisplayData
 from helper import helper
 
 class DeleteRecords:
@@ -233,11 +234,23 @@ class DeleteRecords:
                 dbOps.executeQuery(query, (tInfo[0],))
                 print("Player with fullName: " + name + " successfully deleted.")
                 return
-
             else:
                 print("Operation Cancelled returning to menu...")
                 return
 
     @staticmethod
-    def deleteGame():
-        print()
+    def deleteGame(dbOps):
+        attr = ["gameID", "teamID", "matchupteamID", "homeGame", "seasonID", "gameDate", "WL", "fgM", "fgA", "fgPCT", "fg3M", "fg3A", "fg3PCT", "rebounds", "assists", "steals", "blocks", "points"]
+        print("Which Game's stats would you like to delete?")
+        gInfo = DisplayData.gameData(dbOps)
+
+        print("Are you sure you want to delete the record?")
+        if (input("Y/N: ")) == 'Y':
+            # delete from game
+            query = "DELETE FROM game WHERE gameID = %s;"
+            dbOps.executeQuery(query, (gInfo[0],))
+            print ("game with gameID: " + str(gInfo[0]) + " successfully delete.")
+            return
+        else:
+            print("Operation Cancelled returning to menu...")
+            return

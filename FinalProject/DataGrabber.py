@@ -13,6 +13,7 @@ class DataGrabber:
         DataGrabber.updatePlayers(dbOps)
         DataGrabber.updatePlayerStats(dbOps)
         DataGrabber.updateTeamStats(dbOps)
+        DataGrabber.updateGame(dbOps)
 
     @staticmethod
     def updatePlayers(dbOps):

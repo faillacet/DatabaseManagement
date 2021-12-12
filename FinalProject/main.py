@@ -1,4 +1,5 @@
 from DataGrabber import DataGrabber
+from QueryData import QueryData
 from DeleteRecords import DeleteRecords
 from UpdateRecords import UpdateRecords
 from DisplayData import DisplayData
@@ -54,11 +55,17 @@ def displayData(dbOps):
             
 # Secondary Menu - Query Records
 def queryData(dbOps):
-    options = [1, 2, 3, 4, 5, 6]
-    print("\What kind of Query would you like to do?")
-    print("1) Player \n2) PlayerStats \n3) Team \n4) TeamStats \n5) Game \n6) Return to Menu")
+    options = [1, 2]
+    print("\nWhat kind of Query would you like to do?")
+    print("1) Top 10 of a specific stat \n2) Probability to win \n3) Return to Menu")
     userChoice = helper.get_choice(options)
-    
+
+    if userChoice == 1:
+        QueryData.displayTop10(dbOps)
+    elif userChoice == 2:
+        QueryData.chanceToWin(dbOps)
+    else:
+        print()
     
 # Secondary Menu - Add Records to DB
 def addRecords(dbOps):
@@ -127,7 +134,7 @@ def main():
     #updateDB(dbOps)
 
     # TESTING SECTION -------------
-    DataGrabber.updateGame(dbOps)
+    QueryData.chanceToWin(dbOps)
     # -----------------------------
 
     # Program Loop

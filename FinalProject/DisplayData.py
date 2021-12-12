@@ -6,11 +6,15 @@ class DisplayData:
     def playerData(dbOps):
         print("\nSearch by: \n1) ID \n2) Full Name")
         userChoice = helper.get_choice([1, 2])
-        attr = ["ID", "Full Name", "First Name", "Last Name", "isActive"]
+        attr = ["playerID", "teamID", "fullName", "firstName", "lastName", "isActive"]
 
         if userChoice == 1:
             # Search by ID
-            ID = int(input("Enter ID: "))
+            try:
+                ID = int(input("Enter ID: "))
+            except:
+                print("Please use an integer value...\n")
+                return
             query = "SELECT * FROM player WHERE playerID = %s;"
             pInfo = dbOps.getRecord(query, (ID,))
             if pInfo == None:
@@ -34,11 +38,15 @@ class DisplayData:
     def playerStats(dbOps):
         print("\nSearch by: \n1) ID \n2) Full Name")
         userChoice = helper.get_choice([1, 2])
-        attr = ["pID", "timeFrame", "PTS", "AST", "REB", "PIE"]
+        attr = ["playerID", "wins", "losses", "winPCT", "fgM", "fgA", "fgPCT", "fg3M", "fg3A", "fg3PCT", "rebounds", "assists", "blocks", "points"]
 
         if userChoice == 1:
             # Search by ID
-            ID = int(input("Enter ID: "))
+            try:
+                ID = int(input("Enter ID: "))
+            except:
+                print("Please use an integer value...\n")
+                return
             query = "SELECT * FROM playerstats WHERE playerID = %s;"
             pInfo = dbOps.getRecord(query, (ID,))
             if pInfo == None:
@@ -94,7 +102,11 @@ class DisplayData:
             return
 
         elif userChoice == 2:
-            ID = int(input("Enter ID: "))
+            try:
+                ID = int(input("Enter ID: "))
+            except:
+                print("Please use an integer value...\n")
+                return
             query = "SELECT * FROM team WHERE teamID = %s;"
             tInfo = dbOps.getRecord(query, (ID,))
             if tInfo == None:
@@ -117,11 +129,15 @@ class DisplayData:
     def teamStats(dbOps):
         print("\n1) Search By ID\n2) Search By Full Name")
         userChoice = helper.get_choice([1, 2])
-        attr = ["ID", "TimeFrame", "Wins", "Losses", "WinPCT", "FG_PCT", "FG3_PCT", "REB", "AST", "BLK", "PTS"]
+        attr = ["teamID", "wins", "losses", "winPCT", "fgM", "fgA", "fgPCT", "fg3M", "fg3A", "fg3PCT", "rebounds", "assists", "steals", "blocks", "points"]
 
         if userChoice == 1:
             # Search by ID
-            ID = int(input("Enter ID: "))
+            try:
+                ID = int(input("Enter ID: "))
+            except:
+                print("Please use an integer value...\n")
+                return
             query = "SELECT * FROM teamstats WHERE teamID = %s;"
             tInfo = dbOps.getRecord(query, (ID,))
             if tInfo == None:
@@ -161,4 +177,47 @@ class DisplayData:
                 else:
                     helper.formattedDisplay(attr, tInfo)
                     return tInfo
+
+    @staticmethod
+    def gameData(dbOps):
+        attr = ["gameID", "teamID", "matchupteamID", "homeGame", "seasonID", "gameDate", "WL", "fgM", "fgA", "fgPCT", "fg3M", "fg3A", "fg3PCT", "rebounds", "assists", "steals", "blocks", "points"]
+        print("\n1) Search By ID\n2) Search By Both Teams")
+        userChoice = helper.get_choice([1, 2])
+
+        if userChoice == 1:
+            # Search By ID
+            try:
+                ID = int(input("Enter ID: "))
+            except:
+                print("Please enter a valid integer...\n")
+                return
+            query = "SELECT * FROM game WHERE gameID = %s;"
+            gInfo = dbOps.getRecord(query, (ID,))
+            if gInfo == None:
+                print("\nTeam Not Found...\n")
+                return
+            helper.formattedDisplay(attr, gInfo)
+            return gInfo
+
+        else:
+            team1 = input("Enter Full Name of first team: ")
+            team2 = input("Enter Full Name of second team: ")
+
+            try:
+                query = "SELECT teamID FROM team WHERE name = %s"
+                team1ID = dbOps.getRecord(query, (team1,))[0]
+                team2ID = dbOps.getRecord(query, (team2,))[0]
+            except:
+                print("Team not found...\n")
+                return
+
+            try:
+                query = "SELECT * FROM game WHERE teamID = " + str(team1ID) + " AND matchupteamID = " + str(team2ID) + ";"
+                gInfo = dbOps.getRecord(query, None)
+            except:
+                print("Game not found...\n")
+                return
+
+            helper.formattedDisplay(attr, gInfo)
+            return gInfo
 
