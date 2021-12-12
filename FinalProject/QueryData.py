@@ -90,20 +90,50 @@ class QueryData:
         # Comparison Between games
         calc1 = 0
         for x in range(len(games)):
-            calc1 += games[x][7] - gamesReverse[x][7]
-            calc1 += games[x][13] - gamesReverse[x][13]
-            calc1 += games[x][14] - gamesReverse[x][14]
-            calc1 += games[x][15] - gamesReverse[x][15]
-            calc1 += games[x][16] - gamesReverse[x][16]
-            calc1 += games[x][17] - gamesReverse[x][17]
-            if x == (len(games) - 1):
-                calc1 = calc1 / len(games)
-        print(calc1)
+            temp = 0
+            if games[x][6] == 'W':
+                temp += 1.5
+            else:
+                temp += .5    
+
+            if (games[x][13] - gamesReverse[x][13]) > 0:
+                temp += 1.25
+            else:
+                temp += .75
+
+            if (games[x][14] - gamesReverse[x][14]) > 0:
+                temp += 1.1
+            else:
+                temp += .9
+
+            if (games[x][15] - gamesReverse[x][15]) > 0:
+                temp += 1.15
+            else:
+                temp += .85
+
+            if (games[x][16] - gamesReverse[x][16]) > 0:
+                temp += 1.1
+            else:
+                temp += .9
+
+            if (games[x][17] - gamesReverse[x][17]) > 0:
+                temp += 1.3
+            else:
+                temp += .7
+
+            calc1 += (temp / 6);
+
+        calc1 = calc1 / len(games)
 
         # Comparison Between overall stats
         calc2 = (team1Stats[3] / team2Stats[3]) + (team1Stats[10] / team2Stats[10]) + (team1Stats[11] / team2Stats[11]) + (team1Stats[12] / team2Stats[12]) + (team1Stats[13] / team2Stats[13]) + (team1Stats[14] / team2Stats[14])
         calc2 = calc2 / 6
-        print(calc2)
 
         # Final Calc + Display of choice
-        
+        final = ((calc1 * .65) + (calc2 * .35)) * 100
+
+        print("\nGames Comparison Overall: " + str(calc1))
+        print("Stats Comparison Overall: " + str(calc2))
+        print("\nCombining these two factors...")
+        print("Estimated chance of win: " + str(int(final)) + "%\n")
+        return
