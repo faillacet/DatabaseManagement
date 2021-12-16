@@ -22,16 +22,18 @@ class DeleteRecords:
             print("This will also delete the player's stats...")
             if (input("Y/N: ")) == 'Y':
                 # First delete from playerstats (if it exists)
-                try:
-                    query = "DELETE FROM playerstats WHERE playerID = %s;"
-                    dbOps.executeQuery(query,(ID,))
-                except:
-                    pass
+                dbOps.executeQueryTN("START TRANSACTION;")
+                query = "DELETE FROM playerstats WHERE playerID = %s;"
+                dbOps.executeQuery(query,(ID,))
 
                 # Then delete from player
-                query = "DELETE FROM player WHERE playerID = %s;"
-                dbOps.executeQuery(query,(ID,))
-                print("Player with ID: " + str(ID) + " successfully deleted.")
+                try:
+                    query = "DELETE FROM player WHERE playerID = %s;"
+                    dbOps.executeQueryT(query,(ID,))
+                    dbOps.commit()
+                    print("Player with ID: " + str(ID) + " successfully deleted.")
+                except:
+                    dbOps.rollback()
                 return
             
             else:
@@ -51,16 +53,19 @@ class DeleteRecords:
             print("This will also delete the player's stats...")
             if (input("Y/N: ")) == 'Y':
                 # First delete from playerstats (if it exists)
-                try:
-                    query = "DELETE FROM playerstats WHERE playerID = %s;"
-                    dbOps.executeQuery(query,(pInfo[0],))
-                except:
-                    pass
-
+                dbOps.executeQueryTN("START TRANSACTION;")
+                query = "DELETE FROM playerstats WHERE playerID = %s;"
+                dbOps.executeQuery(query,(pInfo[0],))
+                
                 # Then delete from player
-                query = "DELETE FROM player WHERE playerID = %s;"
-                dbOps.executeQuery(query, (pInfo[0],))
-                print("Player with fullName: " + name + " successfully deleted.")
+                try:
+                    query = "DELETE FROM player WHERE playerID = %s;"
+                    dbOps.executeQueryT(query, (pInfo[0],))
+                    dbOps.commit()
+                    print("Player with fullName: " + name + " successfully deleted.")
+                except:
+                    dbOps.rollback()
+                
                 return
 
             else:
@@ -139,17 +144,20 @@ class DeleteRecords:
             print("Are you sure you want to delete the above record?")
             print("This will also delete the team's stats...")
             if (input("Y/N: ")) == 'Y':
-                # First delete from playerstats (if it exists)
-                try:
-                    query = "DELETE FROM teamstats WHERE teamID = %s;"
-                    dbOps.executeQuery(query,(ID,))
-                except:
-                    pass
-
-                # Then delete from player
-                query = "DELETE FROM team WHERE teamID = %s;"
+                # First delete from teamstats (if it exists)
+                dbOps.executeQueryTN("START TRANSACTION;")
+                query = "DELETE FROM teamstats WHERE teamID = %s;"
                 dbOps.executeQuery(query,(ID,))
-                print("Team with ID: " + str(ID) + " successfully deleted.")
+
+                # Then delete from team
+                try:
+                    query = "DELETE FROM team WHERE teamID = %s;"
+                    dbOps.executeQuery(query,(ID,))
+                    dbOps.commit()
+                    print("Team with ID: " + str(ID) + " successfully deleted.")
+                except:
+                    dbOps.rollback()
+
                 return
             
             else:
@@ -166,19 +174,34 @@ class DeleteRecords:
             helper.formattedDisplay(attr, tInfo)
             
             print("Are you sure you want to delete the above record?")
-            print("This will also delete the teams's stats...")
+            print("This will also delete the teams's stats, associated games, and unlink players from this team...")
             if (input("Y/N: ")) == 'Y':
                 # First delete from teamstats (if it exists)
+                dbOps.executeQueryTN("START TRANSACTION;")
                 try:
                     query = "DELETE FROM teamstats WHERE teamID = %s;"
                     dbOps.executeQuery(query,(tInfo[0],))
-                except:
-                    pass
+                
+                    # Now remove games
+                    query = "DELETE FROM game WHERE teamID = %s;"
+                    dbOps.executeQuery(query, (tInfo[0],))
+                    query = "DELETE FROM game WHERE matchupteamID = %s"
+                    dbOps.executeQuery(query, (tInfo[0],))
 
-                # Then delete from team
-                query = "DELETE FROM team WHERE playerID = %s;"
-                dbOps.executeQuery(query, (tInfo[0],))
-                print("Player with fullName: " + name + " successfully deleted.")
+                    # Now unlink players
+                    query = "UPDATE player SET teamID = NULL WHERE teamID = %s"
+                    dbOps.executeQuery(query, (tInfo[0],))
+                    # Then delete from team
+                    
+                    query = "DELETE FROM team WHERE teamID = %s;"
+                    dbOps.executeQueryT(query, (tInfo[0],))
+                    dbOps.commit()
+                    print("Team with name: " + name + " successfully deleted.")
+                except:
+                    dbOps.rollback()
+             
+       
+
                 return
 
             else:

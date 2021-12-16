@@ -95,9 +95,9 @@ class DisplayData:
 
         if userChoice == 1:
             # Display All
-            query = "SELECT * FROM team;"
+            query = "SELECT * FROM vAllTeams;"
             teams = dbOps.getRecords(query)
-            print("\nteamID, name, abbreviation, nickname, city, state, yearfounded")
+            print("\nname, abbreviation, nickname, city, state, yearfounded")
             helper.prettyPrint(teams)
             return
 

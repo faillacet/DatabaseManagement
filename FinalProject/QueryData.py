@@ -2,8 +2,8 @@ from helper import helper
 
 class QueryData:
     @staticmethod
-    def displayTop5(dbOps):
-        print("Display:\n1) Top 5 Players \n2) Top 5 Teams")
+    def displayTop10(dbOps):
+        print("Display:\n1) Top 10 Players \n2) Top 10 Teams")
         userChoice = helper.get_choice([1,2])
 
         if userChoice == 1:
@@ -61,6 +61,72 @@ class QueryData:
             return
 
     @staticmethod
+    def statsByState(dbOps):
+        # Method to view the average stats for teams by the state they are based in
+        print("This feature shows the average stats for teams per state...")
+
+        # Gets stats by state
+        query = '''SELECT state, avg(points), avg(wins), avg(losses), avg(rebounds), avg(assists), avg(steals), avg(blocks) 
+                FROM teamstats as tStats
+                NATURAL JOIN (SELECT teamID, state FROM team) as team
+                GROUP BY state; '''
+        stats = dbOps.getRecords(query)
+        
+        print()
+        for city in stats:
+            print(city[0] + ": ")
+            print("Points: " + str(city[1]))
+            print("Wins: " + str(city[2]))
+            print("Losses: " + str(city[3]))
+            print("Rebounds: " + str(city[4]))
+            print("Assists: " + str(city[5]))
+            print("Steals: " + str(city[6]))
+            print("Blocks: " + str(city[7]) + "\n")
+
+        return
+
+    @staticmethod
+    def gamesBetweenTwoPlayers(dbOps):
+        # Calcs how many games are played between two players
+        print("This feature will calculate how many games are played between two players.")
+        name = input("Enter Full Name of player1: ")
+        name2 = input("Enter Full Name of player2: ")
+        names = [name, name2]
+
+        query = '''SELECT count(*)
+                FROM game as g
+                INNER JOIN (SELECT teamID FROM player Where fullName = %s) as p1
+                ON g.teamID = p1.teamID
+                INNER JOIN (SELECT teamID FROM player WHERE fullName = %s) as p2
+                ON g.matchupteamID = p2.teamID;
+                '''
+        result = dbOps.getRecord(query, names)
+        print("\n Number of games played: " + str(result[0]))
+        print()
+        return
+
+    @staticmethod
+    def gameBetweenTwoTeams(dbOps):
+        # Calcs games between two teams by name
+        print("This feature will caclulate how many games are played between two teams.")
+        name = input("Enter Team Name 1: ")
+        name2 = input("Enter Team Name 2: ")
+        names = [name, name2]
+
+        query = '''SELECT count(*)
+                FROM game as g
+                INNER JOIN (SELECT teamID FROM team Where name = %s) as t1
+                ON g.teamID = t1.teamID
+                INNER JOIN (SELECT teamID FROM team WHERE name = %s) as t2
+                ON g.matchupteamID = t2.teamID;
+                '''
+
+        result = dbOps.getRecord(query, names)
+        print("\n Number of games played: " + str(result[0]))
+        print()
+        return
+
+    @staticmethod
     def chanceToWin(dbOps):
         # USES primitive algorithm to estimate chance of one team to win against another
         # based on previous games against eachother and overall stats
@@ -92,45 +158,75 @@ class QueryData:
         for x in range(len(games)):
             temp = 0
             if games[x][6] == 'W':
-                temp += 1.5
+                temp += 5
             else:
-                temp += .5    
+                temp -= 5
 
-            if (games[x][13] - gamesReverse[x][13]) > 0:
-                temp += 1.25
+            if (games[x][13] > gamesReverse[x][13]):
+                temp += 2
             else:
-                temp += .75
+                temp -= 2
 
-            if (games[x][14] - gamesReverse[x][14]) > 0:
-                temp += 1.1
+            if (games[x][14] > gamesReverse[x][14]):
+                temp += 2
             else:
-                temp += .9
+                temp -= 2
 
-            if (games[x][15] - gamesReverse[x][15]) > 0:
-                temp += 1.15
+            if (games[x][15] > gamesReverse[x][15]):
+                temp += 1
             else:
-                temp += .85
+                temp -= 1
 
-            if (games[x][16] - gamesReverse[x][16]) > 0:
-                temp += 1.1
+            if (games[x][16] > gamesReverse[x][16]):
+                temp += 1
             else:
-                temp += .9
+                temp -= 1
 
-            if (games[x][17] - gamesReverse[x][17]) > 0:
-                temp += 1.3
+            if (games[x][17] > gamesReverse[x][17]):
+                temp += 2.5
             else:
-                temp += .7
+                temp -= 2.5
 
-            calc1 += (temp / 6);
+            calc1 += temp
 
         calc1 = calc1 / len(games)
 
         # Comparison Between overall stats
-        calc2 = (team1Stats[3] / team2Stats[3]) + (team1Stats[10] / team2Stats[10]) + (team1Stats[11] / team2Stats[11]) + (team1Stats[12] / team2Stats[12]) + (team1Stats[13] / team2Stats[13]) + (team1Stats[14] / team2Stats[14])
+        calc2 = 0
+        if team1Stats[3] > team2Stats[3]:
+            calc2 += 5
+        else:
+            calc2 -= 5
+
+        if team1Stats[10] > team2Stats[10]:
+            calc2 += 1
+        else:
+            calc2 -= 1
+
+        if team1Stats[11] > team2Stats[11]:
+            calc2 += 1
+        else:
+            calc2 -= 1
+
+        if team1Stats[12] > team2Stats[12]:
+            calc2 += 1
+        else:
+            calc2 -= 1
+
+        if team1Stats[13] > team2Stats[13]:
+            calc2 += 1
+        else:
+            calc2 -= 1
+
+        if team1Stats[14] > team2Stats[14]:
+            calc2 += 3
+        else:
+            calc2 -= 3
+
         calc2 = calc2 / 6
 
         # Final Calc + Display of choice
-        final = ((calc1 * .65) + (calc2 * .35)) * 100
+        final = (50 + ((calc1 * .55) + (calc2 * .45)))
 
         print("\nGames Comparison Overall: " + str(calc1))
         print("Stats Comparison Overall: " + str(calc2))

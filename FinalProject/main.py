@@ -5,6 +5,7 @@ from UpdateRecords import UpdateRecords
 from DisplayData import DisplayData
 from dbOperations import dbOperations
 from AddRecords import AddRecords
+from Export import Export
 from helper import helper
 
 # Update Data Base upon startup
@@ -15,9 +16,9 @@ def updateDB(dbOps):
 
 # Main Menu
 def displayMenu(dbOps):
-    options = [1, 2, 3, 4, 5, 6]
+    options = [1, 2, 3, 4, 5, 6, 7]
     print("----Welcome to the NBA Database!---- \nPlease choose from the options below:")
-    print("1) Display Data \n2) Query Data \n3) Add Records \n4) Update Records \n5) Delete Records \n6) Exit Program")
+    print("1) Display Data \n2) Query Data \n3) Add Records \n4) Update Records \n5) Delete Records \n6) Export to CSV \n7) Exit Program")
     userChoice = helper.get_choice(options)
 
     if userChoice == 1:
@@ -31,6 +32,8 @@ def displayMenu(dbOps):
     elif userChoice == 5:
         deleteRecords(dbOps)
     elif userChoice == 6:
+        Export.export(dbOps)
+    elif userChoice == 7:
         # Exit Program
         return False
     return True
@@ -55,15 +58,21 @@ def displayData(dbOps):
             
 # Secondary Menu - Query Records
 def queryData(dbOps):
-    options = [1, 2]
+    options = [1, 2, 3, 4, 5, 6]
     print("\nWhat kind of Query would you like to do?")
-    print("1) Top 10 of a specific stat \n2) Probability to win \n3) Return to Menu")
+    print("1) Top 10 of a specific stat \n2) Team stats by state \n3) Probability to win \n4) Games between two Teams\n5) Games between two players\n6) Return to Menu")
     userChoice = helper.get_choice(options)
 
     if userChoice == 1:
         QueryData.displayTop10(dbOps)
     elif userChoice == 2:
+        QueryData.statsByState(dbOps)
+    elif userChoice == 3:
         QueryData.chanceToWin(dbOps)
+    elif userChoice == 4:
+        QueryData.gameBetweenTwoTeams(dbOps)
+    elif userChoice == 5:
+        QueryData.gamesBetweenTwoPlayers(dbOps)
     else:
         print()
     
@@ -131,10 +140,12 @@ def main():
     dbOps = dbOperations()
 
     # Update Database upon startup
-    #updateDB(dbOps)
+    print("Would you like to update?")
+    if input("Y/N: ") == 'Y':
+        updateDB(dbOps)
 
     # TESTING SECTION -------------
-    QueryData.chanceToWin(dbOps)
+
     # -----------------------------
 
     # Program Loop

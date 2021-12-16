@@ -1,5 +1,3 @@
-from helper import helper
-
 class AddRecords:
     @staticmethod
     def addPlayer(dbOps):

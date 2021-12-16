@@ -29,6 +29,21 @@ class dbOperations():
         self.cursor.execute(query)
         self.connection.commit()
 
+    # executes a given query w/ no commit
+    def executeQueryT(self, query, data):
+        self.cursor.execute(query, data)
+
+    def executeQueryTN(self, query):
+        self.cursor.execute(query)
+
+    def commit(self):
+        self.cursor.execute("COMMIT;")
+        self.connection.commit()
+
+    def rollback(self):
+        self.cursor.execute("ROLLBACK;")
+
+
     # function for inserting single record
     def insertRecord(self, query, record):
         self.cursor.execute(query,record)
