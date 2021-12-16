@@ -16,6 +16,7 @@
 # Instructions
 
 * Simply compile main.py with python3 (python3 main.py)
+* Probably dont want to update Database, on the cloud it takes WAY too long, but my pc can handle it fine
 
 # Notes - Where to Find requirements
 
@@ -34,4 +35,5 @@
 
 # Other Notes
 
-* I wasnt entirely sure what you meant by generate reports, so I simply allowed the tables to be printed to csv format
+* I wasnt entirely sure what you meant by generate reports, so I simply allowed the tables to be printed to csv format\
+

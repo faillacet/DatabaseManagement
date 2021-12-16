@@ -4,9 +4,9 @@ class dbOperations():
     def __init__(self):
         # Establish connection
         self.connection = mysql.connector.connect(
-            host="localhost",
+            host="34.133.182.114",
             user="root",
-            password="iarepotato13",
+            password="1444password",
             database="nbaproject"
         )
         print("Database connection established.")

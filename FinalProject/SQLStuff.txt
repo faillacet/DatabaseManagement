@@ -13,6 +13,15 @@ yearfounded int);
 DROP TABLE team;
 select * from team;
 
+SELECT state, avg(points), avg(wins), avg(losses), avg(rebounds), avg(assists), avg(steals), avg(blocks) FROM teamstats as tStats
+Natural JOIN (SELECT teamID, state FROM team) as team
+GROUP BY state;
+               
+SELECT * FROM teamstats as tStats
+Natural JOIN (SELECT teamID, state FROM team) as team
+GROUP BY state;
+
+
 CREATE TABLE player (
 playerID int primary key not null,
 teamID int,
@@ -96,6 +105,20 @@ FOREIGN KEY (matchupteamID) REFERENCES team(teamID)
 );
 
 Select * from game;
+select * from game where teamID = 1610612747 AND matchupteamID = 1610612744;
 
-SELECT teamID from team WHERE abbreviation LIKE '%ATL';
-select * from team WHERE teamID = 1610612762;
+SELECT * from game where teamID = 1610612747 group by matchupteamID;
+
+Create index pnameIndex ON player(fullName);
+create index tnameIndex On team(name);
+
+create view vAllTeams AS
+SELECT name, abbreviation, nickname, city, state, yearfounded
+FROM team;
+
+select * from vAllTeams;
+
+
+select count(*) FROM game where teamID = 1610612758 AND matchupteamID = 1610612764;
+
+select teamID from player where fullName = 'Kyle Kuzma';
