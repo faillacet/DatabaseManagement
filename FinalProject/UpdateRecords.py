@@ -11,7 +11,7 @@ class UpdateRecords:
             return
 
         # Player Found and Displayed - Now modify...
-        attr2 = ["playerID (int)", "teamID (int)" "Full Name (string)", "First Name (string)", "Last Name (string)", "isActive (bool- 0 or 1)"]
+        attr2 = ["playerID (int)", "teamID (int)", "Full Name (string)", "First Name (string)", "Last Name (string)", "isActive (bool- 0 or 1)"]
         print("\nWhich value would you like to modify?")
         for x in range(len(attr2)):
             print(str(x + 1) + ") " + attr2[x])
