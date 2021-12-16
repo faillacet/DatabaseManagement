@@ -31,7 +31,7 @@ class UpdateRecords:
 
     @staticmethod
     def updatePlayerStats(dbOps):
-        attr = ["playerID", "wins", "losses", "winPCT", "fgM", "fgA", "fgPCT", "fg3M", "fg3A", "fg3PCT", "rebounds", "assists", "blocks", "points"]
+        attr = ["playerID", "wins", "losses", "winPCT", "fgM", "fgA", "fgPCT", "fg3M", "fg3A", "fg3PCT", "rebounds", "assists", "steals", "blocks", "points"]
         print("Which player's stats would you like to modify?")
         pStats = DisplayData.playerStats(dbOps)
         if pStats == None:

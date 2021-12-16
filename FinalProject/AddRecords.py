@@ -34,7 +34,7 @@ class AddRecords:
         
     @staticmethod
     def addPlayerStats(dbOps):
-        attr = ["playerID", "wins", "losses", "winPCT", "fgM", "fgA", "fgPCT", "fg3M", "fg3A", "fg3PCT", "rebounds", "assists", "blocks", "points"]
+        attr = ["playerID", "wins", "losses", "winPCT", "fgM", "fgA", "fgPCT", "fg3M", "fg3A", "fg3PCT", "rebounds", "assists", "steals", "blocks", "points"]
         print("-----NOTE: Enter \"NULL\" if the value DNE-----")
         print("-----NOTE: A Player with same ID must already exist in player table-----")
         print("-----NOTE: Type \"quit\" to return to menu-----")

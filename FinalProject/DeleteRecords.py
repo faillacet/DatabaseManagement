@@ -4,7 +4,7 @@ from helper import helper
 class DeleteRecords:
     @staticmethod
     def deletePlayer(dbOps):
-        attr = ["ID", "Full Name", "First Name", "Last Name", "isActive"]
+        attr = ["ID", "teamID", "Full Name", "First Name", "Last Name", "isActive"]
         print("Which player would you like to delete?")
         print("\nSearch by: \n1) ID \n2) Full Name")
         userChoice = helper.get_choice([1, 2])
