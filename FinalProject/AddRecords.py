@@ -9,11 +9,26 @@ class AddRecords:
         for x in attr:
             if x == "pID (int)":
                 # Check to see if ID already exists in DB
-                query = "SELECT playerID FROM player WHERE playerID = %s"
+                query = "SELECT playerID FROM player WHERE playerID = %s;"
                 while True:
                     id = input(x +": ")
                     if dbOps.getRecord(query, (id,)) != None:
-                        print("\nA record with this ID already exists, try again...\n")
+                        print("\nA record with this ID already exists, try again...")
+                    elif id == "NULL":
+                        print("\nID cannot be a null value, try again...")
+                    else:
+                        record.append(id)
+                        break
+            elif x == "teamID (int)":
+                # Make sure teamID exits
+                query = "SELECT teamID FROM team where teamID = %s;"
+                while True:
+                    id = input(x +": ")
+                    if id == "NULL":
+                        record.append(id)
+                        break
+                    elif dbOps.getRecord(query, (id,)) == None:
+                        print("No team w this id exits, try again...")
                     else:
                         record.append(id)
                         break
@@ -21,6 +36,10 @@ class AddRecords:
                 record.append(input(x +": "))
 
         # Insert Record
+        for i in range(len(record)):
+            if record[i] == "NULL":
+                record[i] = None
+
         try:
             attrCount = len(record)
             placeholder = ("%s,"*attrCount)[:-1]
@@ -28,7 +47,8 @@ class AddRecords:
             dbOps.insertRecord(query, tuple(record))
             print("Player Successfully Inserted! \nReturning to menu...\n")
         except:
-            print("Error parsing values, formatting not correct...")
+            print("Error inserting player, try again...\n")
+        
         
         return
         
@@ -65,6 +85,10 @@ class AddRecords:
                 record.append(uInput)
 
         # Insert Record
+        for i in range(len(record)):
+            if record[i] == "NULL":
+                record[i] = None
+        
         try:
             attrCount = len(record)
             placeholder = ("%s,"*attrCount)[:-1]
@@ -72,7 +96,7 @@ class AddRecords:
             dbOps.insertRecord(query, tuple(record))
             print("Playerstats Successfully Inserted! \nReturning to menu...\n")
         except:
-            print("Error parsing values, formatting not correct...")
+            print("Error inserting playerstats, try again...\n")
 
         return
 
@@ -91,6 +115,8 @@ class AddRecords:
                     id = input(x +": ")
                     if dbOps.getRecord(query, (id,)) != None:
                         print("\nA record with this ID already exists, try again...\n")
+                    elif id == "NULL":
+                        print("ID cannot be a null value, try again...")
                     else:
                         record.append(id)
                         break
@@ -98,6 +124,10 @@ class AddRecords:
                 record.append(input(x +": "))
 
         # Insert Record
+        for i in range(len(record)):
+            if record[i] == "NULL":
+                record[i] = None
+
         try:
             attrCount = len(record)
             placeholder = ("%s,"*attrCount)[:-1]
@@ -105,7 +135,7 @@ class AddRecords:
             dbOps.insertRecord(query, tuple(record))
             print("Team Successfully Inserted! \nReturning to menu...\n")
         except:
-            print("Error parsing values, formatting not correct...")
+            print("Error inserting team, try again...\n")
 
         return
             
@@ -139,6 +169,10 @@ class AddRecords:
                 record.append(input(x +": "))
 
         # Insert Record
+        for i in range(len(record)):
+            if record[i] == "NULL":
+                record[i] = None
+
         try:
             attrCount = len(record)
             placeholder = ("%s,"*attrCount)[:-1]
@@ -146,7 +180,7 @@ class AddRecords:
             dbOps.insertRecord(query, tuple(record))
             print("Teamstats Successfully Inserted! \nReturning to menu...\n")
         except:
-            print("Error parsing values, formatting not correct...")
+            print("Error inserting teamstats, try again...\n")
 
         return
 
@@ -168,6 +202,8 @@ class AddRecords:
                         return
                     elif dbOps.getRecord(query, (id,)) != None:
                         print("\nA record with this gameID already exists, try again...\n")
+                    elif id == "NULL":
+                        print("\nID cannot be a null value, try again...")
                     else:
                         record.append(id)
                         break
@@ -187,6 +223,10 @@ class AddRecords:
                 record.append(input(x +": "))
 
         # Insert Record
+        for i in range(len(record)):
+            if record[i] == "NULL":
+                record[i] = None
+
         try:
             attrCount = len(record)
             placeholder = ("%s,"*attrCount)[:-1]
@@ -194,6 +234,6 @@ class AddRecords:
             dbOps.insertRecord(query, tuple(record))
             print("Game Successfully Inserted! \nReturning to menu...\n")
         except:
-            print("Error parsing values, formatting not correct...")
+            print("Error inserting game, try again...\n")
 
         return

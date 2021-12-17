@@ -38,7 +38,7 @@ class DisplayData:
     def playerStats(dbOps):
         print("\nSearch by: \n1) ID \n2) Full Name")
         userChoice = helper.get_choice([1, 2])
-        attr = ["playerID", "wins", "losses", "winPCT", "fgM", "fgA", "fgPCT", "fg3M", "fg3A", "fg3PCT", "rebounds", "assists", "blocks", "points"]
+        attr = ["playerID", "wins", "losses", "winPCT", "fgM", "fgA", "fgPCT", "fg3M", "fg3A", "fg3PCT", "rebounds", "assists", "steals", "blocks", "points"]
 
         if userChoice == 1:
             # Search by ID
