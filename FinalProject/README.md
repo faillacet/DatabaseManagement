@@ -17,6 +17,7 @@
 
 * Simply compile main.py with python3 (python3 main.py)
 * Probably dont want to update Database, on the cloud it takes WAY too long, but my pc can handle it fine
+* Public IP: 34.133.182.114, user: root, password: 1444password, database: nbaproject
 
 # Notes - Where to Find requirements
 
